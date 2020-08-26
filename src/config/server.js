@@ -17,5 +17,3 @@ app.use(cors(corsOptions));
 app.use(bodyParser.text());
 app.set('port', process.env.PORT || 5000);
 app.use(router);
-
-module.exports = app;

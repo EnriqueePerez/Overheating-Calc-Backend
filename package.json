@@ -4,12 +4,13 @@
   "description": "Backend for the overheating-calculator",
   "main": "index.js",
   "scripts": {
-    "start": "node index",
-    "test": "nodemon index"
+    "dev": "DEBUG=app:* NODE_ENV=development nodemon index",
+    "start": "NODE_ENV=production node index.js"
   },
   "author": "EnriquePerez",
   "license": "MIT",
   "dependencies": {
+    "@hapi/boom": "^9.1.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
