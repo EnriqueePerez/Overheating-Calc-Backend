@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
 const { config } = require('./src/config/index');
@@ -10,6 +11,12 @@ const {
   errorHandler,
 } = require('./src/utils/middlewares/errorHandlers');
 const notFoundHandler = require('./src/utils/middlewares/notFoundHandler');
+
+app.use(
+  cors({
+    origin: config.clientIp,
+  })
+);
 
 //body parser
 app.use(express.json());

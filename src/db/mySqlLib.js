@@ -1,5 +1,8 @@
 const mysql = require('mysql');
 const { config } = require('../config/index');
+const parsingValues = require('../utils/preparingData');
+
+// const errorHandler = require('../utils/middlewares/errorHandlers');
 
 // const connection = mysql.createConnection({
 //   host: config.dbHost,
@@ -26,11 +29,11 @@ class mySqlLib {
         this.client.connect((err) => {
           if (err) {
             reject(err); //If error in connection, then reject promise
+          } else {
+            console.log('Connected succesfully to MySQL');
+            // console.log(this.client);
+            resolve(this.client);
           }
-
-          console.log('Connected succesfully to MySQL');
-          // console.log(this.client);
-          resolve(this.client);
         });
       });
     }
@@ -39,9 +42,33 @@ class mySqlLib {
 
   //Setting general functions
   getAll(table, details, callback) {
-    return this.connect().then((db) => {
-      return db.query(`SELECT * FROM ${table} ${details}`, callback);
-    });
+    return this.connect()
+      .then((db) => {
+        return db.query(`SELECT * FROM ${table} ${details}`, callback);
+      })
+      .catch((err) => {
+        throw err;
+      });
+  }
+
+  async createWithValidation(data, callback) {
+    //Preparing the data
+    const rawValues = data;
+    const parsedValues = parsingValues(rawValues);
+
+    //Establishing connection with db
+    const query = await this.connect()
+      .then((db) => {
+        return db.query(
+          `CALL validatingData(${'?, '.repeat(14).concat('?')});`,
+          parsedValues,
+          callback
+        );
+      })
+      .catch((err) => {
+        throw err;
+      });
+    return query;
   }
 
   //get?

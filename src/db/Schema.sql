@@ -15,8 +15,9 @@ CREATE TABLE IF NOT EXISTS users (
 --timestamp yyyy--mm--dd hh:mm:ss 
 
 CREATE TABLE IF NOT EXISTS data (
-    `registro_id` INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    `hora_de_registro` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `registro_id` INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT ,
+    `hora_de_registro` TIME NOT NULL,
+    `fecha_de_registro` DATE NOT NULL,
     `CR` VARCHAR(6) NOT NULL,
     `id_usuario` INT UNSIGNED NOT NULL,
     `unidad` VARCHAR(20) NOT NULL,
@@ -28,6 +29,7 @@ CREATE TABLE IF NOT EXISTS data (
     `temp_tubo` DOUBLE(6, 2) NOT NULL,
     `temp_saturacion` DOUBLE(6, 2) NOT NULL,
     `temp_sobrecalentamiento` DOUBLE(6, 2) NOT NULL,
-    `comentarios` TEXT,
+    `aprobado` TINYINT(1) NOT NULL,
+    `comentarios` TEXT
 );
 

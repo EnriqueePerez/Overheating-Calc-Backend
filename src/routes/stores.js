@@ -28,35 +28,3 @@ function storeApi(app) {
 }
 
 module.exports = storeApi;
-
-// const db = require('../db/dbConnection');
-
-// const connectToDB = () => {
-//   db.connect();
-//   console.log('Conectado a la DB');
-// };
-
-// const disconnectFromDB = () => {
-//   db.end();
-//   console.log('Desconectado de la DB');
-// };
-
-// module.exports = (router) => {
-//   router.post('/', (req, res) => {
-//     // const data = JSON.parse(req.body);
-//     // console.log(data);
-//     res.status(201).send('hola');
-//   });
-
-//   router.get('/stores', (req, res) => {
-//     connectToDB();
-//     db.query('SELECT * FROM stores ORDER BY nombre', (err, result) => {
-//       if (err) {
-//         res.status(400).send('error en la peticion');
-//       }
-//       const stores = result;
-//       res.status(201).send(stores);
-//       disconnectFromDB();
-//     });
-//   });
-// };
