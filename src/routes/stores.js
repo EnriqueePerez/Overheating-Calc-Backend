@@ -20,6 +20,7 @@ function storeApi(app) {
           return err;
         }
         res.status(200).send(results);
+        console.log('tiendas enviadas');
       });
     } catch (err) {
       next(err);
