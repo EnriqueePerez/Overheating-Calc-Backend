@@ -26,7 +26,7 @@ function formatDateAndTime() {
 
   //   console.log(date);
   //   console.log(time);
-  const formattedDateandTime = { date, time };
+  const formattedDateandTime = { date, time, month, year };
   return formattedDateandTime;
 }
 

@@ -51,17 +51,30 @@ class mySqlLib {
       });
   }
 
-  async createWithValidation(data, callback) {
-    //Preparing the data
-    const rawValues = data;
-    const parsedValues = parsingValues(rawValues);
-
+  async createWithValidation(table, data, callback) {
     //Establishing connection with db
     const query = await this.connect()
       .then((db) => {
         return db.query(
-          `CALL validatingData(${'?, '.repeat(14).concat('?')});`,
-          parsedValues,
+          `CALL validating${table}(${'?, '.repeat(14).concat('?')});`,
+          data,
+          callback
+        );
+      })
+      .catch((err) => {
+        throw err;
+      });
+    return query;
+  }
+
+  async updateData(table, data, callback) {
+    const query = await this.connect()
+      .then((db) => {
+        return db.query(
+          `UPDATE ${table} 
+      SET comentarios = ?, aprobado= ?, presion_arranque= ?, presion_paro = ?, presion_succion = ?, resistencia_pt1000 = ?, temp_saturacion = ?, temp_tubo = ?, temp_sobrecalentamiento = ?, refrigerante = ?, id_usuario = ?, hora_de_registro = ?, fecha_de_registro = ?
+      WHERE MONTH(fecha_de_registro) = ? AND YEAR(fecha_de_registro) = ? AND CR = ? AND unidad = ? LIMIT 1`,
+          data,
           callback
         );
       })

@@ -30,6 +30,6 @@ CREATE TABLE IF NOT EXISTS data (
     `temp_saturacion` DOUBLE(6, 2) NOT NULL,
     `temp_sobrecalentamiento` DOUBLE(6, 2) NOT NULL,
     `aprobado` TINYINT(1) NOT NULL,
-    `comentarios` TEXT
+    `comentarios` TEXT  
 );
 
