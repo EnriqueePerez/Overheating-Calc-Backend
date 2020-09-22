@@ -10,6 +10,7 @@ function addInfo(app) {
 
   router.post('/', async (req, res, next) => {
     try {
+      console.log(req.body);
       const creatingData = await dataServices.createData(
         req.body,
         (err, results) => {
@@ -37,6 +38,7 @@ function addInfo(app) {
 
   router.put('/', async (req, res, next) => {
     try {
+      console.log(req.body);
       const updatingData = await dataServices.updateData(
         req.body,
         (err, results) => {
