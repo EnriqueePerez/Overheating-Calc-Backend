@@ -51,6 +51,17 @@ class mySqlLib {
       });
   }
 
+  async create(table, data, callback) {
+    const query = await this.connect()
+      .then((db) => {
+        return db.query(`INSERT INTO ${table} VALUES (?);`, data, callback);
+      })
+      .catch((err) => {
+        throw err;
+      });
+    return query;
+  }
+
   async createWithValidation(table, data, callback) {
     //Establishing connection with db
     const query = await this.connect()
