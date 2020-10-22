@@ -5,6 +5,7 @@ const app = express();
 const { config } = require('./src/config/index');
 const storeApi = require('./src/routes/stores');
 const addInfo = require('./src/routes/addInfo');
+const auth = require('./src/routes/auth');
 const {
   logErrors,
   wrapErrors,
@@ -24,6 +25,7 @@ app.use(express.json());
 //routes
 storeApi(app);
 addInfo(app);
+auth(app);
 
 // Catching 404 error
 app.use(notFoundHandler);

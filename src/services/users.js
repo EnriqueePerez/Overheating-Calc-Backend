@@ -4,13 +4,17 @@ const bcrypt = require('bcrypt');
 
 class UserService {
   constructor() {
-    this.table = 'usersLogin';
+    this.table = 'users';
     this.mySQL = new mySqlLib();
   }
 
   //looking for the user in the db
-  async getUser({ email }) {
-    const [user] = await this.mySQL.getAll(this.table, '', callback);
+  async getUser({ email }, callback) {
+    const user = await this.mySQL.getAll(
+      this.table,
+      `WHERE email='${email}'`,
+      callback
+    );
     return user;
   }
 
