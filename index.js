@@ -16,6 +16,7 @@ const notFoundHandler = require('./src/utils/middlewares/notFoundHandler');
 app.use(
   cors({
     origin: config.clientIp,
+    credentials: true,
   })
 );
 

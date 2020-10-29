@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const boom = require('@hapi/boom');
+const cookieParser = require('cookie-parser');
 const UserService = require('../services/users');
 
 const { config } = require('../config');
@@ -11,55 +12,53 @@ require('../utils/auth/basicStrategy');
 function auth(app) {
   const router = express.Router();
 
-  app.use('/auth', router);
-
+  app.use(cookieParser());
   app.use(express.json());
+  app.use('/auth', router);
 
   const userServices = new UserService();
 
-  router.post('/sign-in', async function (req, res, next) {
-    passport.authenticate('basic', function (error, user) {
-      try {
-        // console.log('este es el user', user);
-        // console.log('este es el error', error);
-        if (error || !user) {
-          //If the user is not found, send error
-          next(boom.unauthorized());
-        }
-
-        req.login(user, { session: false }, async (error) => {
-          if (error) {
-            next(error);
-          }
-
-          const { id_usuario, nombre, email, scopes } = user;
-
-          //Preparing token with the scope
-          const payload = {
-            id: id_usuario,
-            name: nombre,
-            email: email,
-            scopes,
-          };
-
-          //Signing token
-          const token = jwt.sign(payload, config.authJwtSecret, {
-            expiresIn: '60m',
-          });
-
-          //Sending the token with the user
-          res.cookie('token', scopes, {
-            httpOnly: false,
-            secure: false,
-          });
-
-          //   console.log(user);
-          res.status(202).json({ token, user: { id_usuario, nombre } }); //remove token in production
-        });
-      } catch (error) {
-        next(error);
+  router.post(
+    '/login',
+    passport.authenticate('basic', { session: false }),
+    function (req, res, next) {
+      if (!req.user) {
+        next(boom.unauthorized());
       }
-    })(req, res, next);
+
+      const { id_usuario, nombre, email, scopes } = req.user;
+
+      //Preparing token with the scope
+      const payload = {
+        id: id_usuario,
+        name: nombre,
+        email: email,
+        scopes,
+      };
+
+      // Signing token
+      const token = jwt.sign(payload, config.authJwtSecret, {
+        expiresIn: '60m',
+      });
+
+      // res.setHeader('Access-Control-Allow-Credentials', 'true');
+
+      res
+        .cookie('tokenDeServer', token, {
+          httpOnly: true,
+          secure: false,
+          path: '/',
+          maxAge: 3600000,
+        })
+        .status(202)
+        .json({ user: { id: id_usuario, name: nombre } });
+    }
+  );
+
+  router.get('/check', function (req, res, next) {
+    console.log(req.headers);
+    console.log(req.cookies);
+    res.send('todo bien');
   });
 }
 
