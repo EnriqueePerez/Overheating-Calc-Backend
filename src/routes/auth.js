@@ -8,6 +8,7 @@ const UserService = require('../services/users');
 const { config } = require('../config');
 
 require('../utils/auth/basicStrategy');
+require('../utils/auth/jwt');
 
 function auth(app) {
   const router = express.Router();
@@ -44,9 +45,9 @@ function auth(app) {
       // res.setHeader('Access-Control-Allow-Credentials', 'true');
 
       res
-        .cookie('tokenDeServer', token, {
+        .cookie('token', token, {
           httpOnly: true,
-          secure: false,
+          secure: !config.dev,
           path: '/',
           maxAge: 3600000,
         })
@@ -55,11 +56,16 @@ function auth(app) {
     }
   );
 
-  router.get('/check', function (req, res, next) {
-    console.log(req.headers);
-    console.log(req.cookies);
-    res.send('todo bien');
-  });
+  router.post(
+    '/verify',
+    passport.authenticate('jwt', { session: false }),
+    function (req, res, next) {
+      console.log(req.user);
+      // console.log(req.headers);
+      // console.log(req.cookies);
+      res.send('todo bien');
+    }
+  );
 }
 
 module.exports = auth;
