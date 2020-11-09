@@ -47,9 +47,10 @@ function auth(app) {
       res
         .cookie('token', token, {
           httpOnly: true,
-          secure: !config.dev,
+          secure: false,
           path: '/',
           maxAge: 3600000,
+          sameSite: 'none',
         })
         .status(202)
         .json({ user: { id: id_usuario, name: nombre } });
