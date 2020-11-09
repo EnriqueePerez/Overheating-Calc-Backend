@@ -47,7 +47,7 @@ function auth(app) {
       res
         .cookie('token', token, {
           httpOnly: true,
-          secure: false,
+          secure: true,
           path: '/',
           maxAge: 3600000,
           sameSite: 'none',
