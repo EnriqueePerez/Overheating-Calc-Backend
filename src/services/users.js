@@ -1,6 +1,7 @@
 const mySqlLib = require('../db/mySqlLib');
-var generatePassword = require('password-generator');
+const generatePassword = require('password-generator');
 const bcrypt = require('bcrypt');
+const boom = require('@hapi/boom');
 
 class UserService {
   constructor() {
@@ -30,6 +31,17 @@ class UserService {
     );
 
     return { createdUser, password };
+  }
+
+  async changePass(email, newPass, callback) {
+    const hashedPassword = await bcrypt.hash(newPass, 10);
+    const changedPass = this.mySQL.updatePassword(
+      this.table,
+      hashedPassword,
+      email,
+      callback
+    );
+    return changedPass;
   }
 
   //deleteUser??

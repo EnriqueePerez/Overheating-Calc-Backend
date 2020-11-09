@@ -61,9 +61,47 @@ function auth(app) {
     passport.authenticate('jwt', { session: false }),
     function (req, res, next) {
       console.log(req.user);
+      const { id_usuario, nombre } = req.user;
       // console.log(req.headers);
       // console.log(req.cookies);
-      res.send('todo bien');
+      res.status(202).json({ user: { id: id_usuario, name: nombre } });
+    }
+  );
+
+  router.post(
+    '/logout',
+    passport.authenticate('jwt', { session: false }),
+    function (req, res, next) {
+      // console.log(req.cookies);
+      res.clearCookie('token').status(200).end();
+    }
+  );
+
+  router.post(
+    '/changePass',
+    passport.authenticate('jwt', { session: false }),
+    async function (req, res, next) {
+      const { email } = req.user;
+      const { newPass } = req.body;
+
+      try {
+        const changePass = await userServices.changePass(
+          email,
+          newPass,
+          (err, results) => {
+            if (err) {
+              next(err);
+            } else {
+              if (results.affectedRows) {
+                console.log(results.affectedRows);
+                res.status(200).send('done');
+              }
+            }
+          }
+        );
+      } catch (err) {
+        next(err);
+      }
     }
   );
 }

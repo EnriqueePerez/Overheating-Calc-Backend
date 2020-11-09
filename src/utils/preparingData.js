@@ -8,6 +8,7 @@ function parsingInsertedValues(values) {
   values.date = dateAndTime.date;
 
   const onlyValues = Object.values(values); //Extracting the values from the object
+  console.log(onlyValues);
   const parsedValues = onlyValues.map((i) => i.toString()); //Parsing the values to string to avoid errors
   return parsedValues;
 }
@@ -32,6 +33,7 @@ function parsingUpdatedValues(values) {
   // console.log(values);
 
   const onlyValues = Object.values(values);
+  // console.log(onlyValues);
   const parsedValues = onlyValues.map((i) => i.toString());
   return parsedValues;
 }
