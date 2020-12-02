@@ -1,3 +1,4 @@
+const { raw } = require('body-parser');
 const mySqlLib = require('../db/mySqlLib');
 const parser = require('../utils/preparingData');
 
@@ -5,6 +6,7 @@ class dataService {
   constructor() {
     this.table1 = 'data';
     this.table2 = 'dataSecondary';
+    this.table3 = 'OperationData';
     this.mySQL = new mySqlLib();
   }
 
@@ -26,6 +28,7 @@ class dataService {
 
     const parsedValues = parser.parsingUpdatedValues(rawValues);
     const updateData = await this.mySQL.updateData(
+      //change the name to something more specific
       this.table1,
       parsedValues,
       callback
@@ -56,6 +59,32 @@ class dataService {
       callback
     );
     return updateData;
+  }
+
+  async createOperationData(data, callback) {
+    const rawValues = data;
+    const parsedValues = parser.parsingInsertedValues(rawValues);
+    // console.log('estos son los parsedValues', parsedValues);
+
+    const createdData = await this.mySQL.createOperationData(
+      this.table3,
+      parsedValues,
+      callback
+    );
+    return createdData;
+  }
+
+  async updateOperationData(data, callback) {
+    const rawValues = data;
+    const parsedValues = parser.parsingUpdatedValues(rawValues);
+    // console.log('estos son los raw', rawValues);
+
+    const createdData = await this.mySQL.updateOperationData(
+      this.table3,
+      parsedValues,
+      callback
+    );
+    return createdData;
   }
 
   //updateData

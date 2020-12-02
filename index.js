@@ -12,6 +12,7 @@ const {
   errorHandler,
 } = require('./src/utils/middlewares/errorHandlers');
 const notFoundHandler = require('./src/utils/middlewares/notFoundHandler');
+const operationInfo = require('./src/routes/operationInfo');
 
 app.use(
   cors({
@@ -26,6 +27,7 @@ app.use(express.json());
 //routes
 storeApi(app);
 addInfo(app);
+operationInfo(app);
 auth(app);
 
 // Catching 404 error
