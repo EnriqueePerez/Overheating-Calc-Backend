@@ -83,7 +83,7 @@ class mySqlLib {
     const query = await this.connect()
       .then((db) => {
         return db.query(
-          `CALL validating${table}(${'?, '.repeat(13).concat('?')});`,
+          `CALL validating${table}(${'?, '.repeat(15).concat('?')});`,
           data,
           callback
         );
@@ -116,7 +116,7 @@ class mySqlLib {
       .then((db) => {
         return db.query(
           `UPDATE ${table} 
-      SET comentarios = ?, aprobado= ?, retorno= ?, inyeccion = ?, porcentaje_evaporador = ?, ciclos_evaporador = ?, porcentaje_condensador = ?, ciclos_condensador = ?, delta = ?, id_usuario = ?, hora_de_registro = ?, fecha_de_registro = ?
+      SET comentarios = ?, aprobado= ?, retorno = ?, inyeccion = ?, retorno2 = ?, inyeccion2 = ?, porcentaje_evaporador = ?, ciclos_evaporador = ?, porcentaje_condensador = ?, ciclos_condensador = ?, delta = ?, id_usuario = ?, hora_de_registro = ?, fecha_de_registro = ?
       WHERE MONTH(fecha_de_registro) = ? AND YEAR(fecha_de_registro) = ? AND CR = ? AND unidad = ? LIMIT 1`,
           data,
           callback
